@@ -17,6 +17,7 @@ Route::prefix('v1')->group(function () {
     Route::apiResources([
         'province' => 'ProvinceController',
         'state' => 'StateController',
-        'village' => 'VillageController'
+        'village' => 'VillageController',
+        'city' => 'CityController'
     ]);
 });
