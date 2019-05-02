@@ -16,6 +16,7 @@ use Illuminate\Http\Request;
 Route::prefix('v1')->group(function () {
     Route::apiResources([
         'province' => 'ProvinceController',
-        'state' => 'StateController'
+        'state' => 'StateController',
+        'village' => 'VillageController'
     ]);
 });
