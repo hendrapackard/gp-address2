@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\StateResource;
-use App\State;
+use App\Http\Resources\SubDistrictResource;
+use App\SubDistrict;
 use Illuminate\Http\Request;
 
-class StateController extends Controller
+class SubDistrictController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,7 +15,7 @@ class StateController extends Controller
      */
     public function index()
     {
-        return StateResource::collection(State::paginate(20));
+        return SubDistrictResource::collection(SubDistrict::paginate(20));
     }
 
     /**
@@ -26,11 +26,11 @@ class StateController extends Controller
      */
     public function store(Request $request)
     {
-        $state = State::create([
+        $subDistrict = SubDistrict::create([
             'name' => $request->name,
         ]);
 
-        return new StateResource($state);
+        return new SubDistrictResource($subDistrict);
     }
 
     /**
@@ -39,9 +39,9 @@ class StateController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(State $state)
+    public function show(SubDistrict $subDistrict)
     {
-        return new StateResource($state);
+        return new SubDistrictResource($subDistrict);
     }
 
     /**
@@ -51,11 +51,11 @@ class StateController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, State $state)
+    public function update(Request $request, SubDistrict $subDistrict)
     {
-        $state->update($request->only('name'));
+        $subDistrict->update($request->only('name'));
 
-        return new StateResource($state);
+        return new SubDistrictResource($subDistrict);
     }
 
     /**
@@ -64,9 +64,9 @@ class StateController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(State $state)
+    public function destroy(SubDistrict $subDistrict)
     {
-        $state->delete();
+        $subDistrict->delete();
 
         return response()->json(null,204);
     }
