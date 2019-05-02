@@ -18,6 +18,7 @@ Route::prefix('v1')->group(function () {
         'province' => 'ProvinceController',
         'state' => 'StateController',
         'village' => 'VillageController',
-        'city' => 'CityController'
+        'city' => 'CityController',
+        'country' => 'CountryController',
     ]);
 });
