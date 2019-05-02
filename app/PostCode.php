@@ -5,16 +5,17 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Village extends Model
+class PostCode extends Model
 {
     use SoftDeletes;
 
     protected $fillable = [
-        'name',
+        'code',
+        'village_id',
     ];
 
-    public function postCode()
+    public function village()
     {
-        return $this->hasMany("App\PostCode");
+        return $this->belongsTo('App\Village')->select(['id', 'name']);
     }
 }

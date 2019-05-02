@@ -20,5 +20,6 @@ Route::prefix('v1')->group(function () {
         'city' => 'CityController',
         'country' => 'CountryController',
         'sub-district' => 'SubDistrictController',
+        'post-code' => 'PostCodeController',
     ]);
 });
