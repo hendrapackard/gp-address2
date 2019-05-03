@@ -26,7 +26,12 @@ class PostCodeController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $postCode = PostCode::create([
+            'code' => $request->code,
+            'village_id' => $request->village_id,
+        ]);
+
+        return new PostCodeResource($postCode);
     }
 
     /**
@@ -35,9 +40,9 @@ class PostCodeController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(PostCode $postCode)
     {
-        //
+        return new PostCodeResource($postCode);
     }
 
     /**
@@ -47,9 +52,11 @@ class PostCodeController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, PostCode $postCode)
     {
-        //
+        $postCode->update($request->only(['code','village_id']));
+
+        return new PostCodeResource($postCode);
     }
 
     /**
@@ -58,8 +65,10 @@ class PostCodeController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(PostCode $postCode)
     {
-        //
+        $postCode->delete();
+
+        return response()->json(null,204);
     }
 }
