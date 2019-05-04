@@ -12,4 +12,9 @@ class Country extends Model
     protected $fillable = [
         'name',
     ];
+
+    public function address()
+    {
+        return $this->hasMany("App\Address");
+    }
 }

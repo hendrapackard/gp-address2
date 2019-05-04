@@ -17,4 +17,9 @@ class Village extends Model
     {
         return $this->hasMany("App\PostCode");
     }
+
+    public function address()
+    {
+        return $this->hasMany("App\Address");
+    }
 }
