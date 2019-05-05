@@ -26,8 +26,8 @@ class CreateAddressesTable extends Migration
             $table->boolean('is_default')->default(false);
             $table->string('postcode');
             $table->unsignedBigInteger('owner_id');
-            $table->softDeletes();
             $table->timestamps();
+            $table->softDeletes();
 
             $table->foreign('village_id')->references('id')->on('villages')
                 ->onDelete('restrict')
