@@ -25,6 +25,8 @@ class CreateAddressesTable extends Migration
             $table->unsignedBigInteger('country_id');
             $table->boolean('is_default')->default(false);
             $table->string('postcode');
+            $table->double('latitude');
+            $table->double('longitude');
             $table->unsignedBigInteger('owner_id');
             $table->timestamps();
             $table->softDeletes();

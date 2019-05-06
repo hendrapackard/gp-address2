@@ -20,6 +20,8 @@ class Address extends Model
         'country_id',
         'is_default',
         'postcode',
+        'latitude',
+        'longitude',
         'owner_id',
     ];
 

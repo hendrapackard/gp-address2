@@ -41,6 +41,8 @@ class AddressController extends Controller
             'country_id' => $request->country_id,
             'is_default' => $request->is_default,
             'postcode' => $request->postcode,
+            'latitude' => $request->latitude,
+            'longitude' => $request->longitude,
             'owner_id' => $request->owner_id,
         ]);
 
@@ -80,6 +82,8 @@ class AddressController extends Controller
             'country_id',
             'is_default',
             'postcode',
+            'latitude',
+            'longitude',
             'owner_id',
         ]));
 
