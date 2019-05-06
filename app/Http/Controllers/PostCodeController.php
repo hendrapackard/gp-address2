@@ -15,7 +15,11 @@ class PostCodeController extends Controller
      */
     public function index()
     {
-        return PostCodeResource::collection(PostCode::paginate(20));
+        return PostCodeResource::collection(PostCode::paginate(20))
+            ->additional([
+                'code' => 200,
+                'message' => 'success'
+            ]);
     }
 
     /**
@@ -31,7 +35,8 @@ class PostCodeController extends Controller
             'village_id' => $request->village_id,
         ]);
 
-        return new PostCodeResource($postCode);
+        return (new PostCodeResource($postCode))->response()
+            ->setStatusCode(200);
     }
 
     /**
@@ -69,6 +74,9 @@ class PostCodeController extends Controller
     {
         $postCode->delete();
 
-        return response()->json(null,204);
+        return response()->json([
+            'code' => 200,
+            'message' => 'success'
+        ],200);
     }
 }

@@ -15,7 +15,11 @@ class CountryController extends Controller
      */
     public function index()
     {
-        return CountryResource::collection(Country::paginate(20));
+        return CountryResource::collection(Country::paginate(20))
+            ->additional([
+                'code' => 200,
+                'message' => 'success'
+            ]);
     }
 
     /**
@@ -30,7 +34,8 @@ class CountryController extends Controller
             'name' => $request->name,
         ]);
 
-        return new CountryResource($country);
+        return (new CountryResource($country))->response()
+            ->setStatusCode(200);
     }
 
     /**
@@ -68,6 +73,9 @@ class CountryController extends Controller
     {
         $country->delete();
 
-        return response()->json(null,204);
+        return response()->json([
+            'code' => 200,
+            'message' => 'success'
+        ],200);
     }
 }

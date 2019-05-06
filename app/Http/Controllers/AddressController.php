@@ -15,7 +15,11 @@ class AddressController extends Controller
      */
     public function index()
     {
-        return AddressResource::collection(Address::paginate(20));
+        return AddressResource::collection(Address::paginate(20))
+            ->additional([
+                'code' => 200,
+                'message' => 'success'
+            ]);
     }
 
     /**
@@ -40,7 +44,8 @@ class AddressController extends Controller
             'owner_id' => $request->owner_id,
         ]);
 
-        return new AddressResource($address);
+        return (new AddressResource($address))->response()
+            ->setStatusCode(200);
 
     }
 
@@ -91,6 +96,9 @@ class AddressController extends Controller
     {
         $address->delete();
 
-        return response()->json(null,204);
+        return response()->json([
+            'code' => 200,
+            'message' => 'success'
+        ],200);
     }
 }

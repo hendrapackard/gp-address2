@@ -15,7 +15,11 @@ class ProvinceController extends Controller
      */
     public function index()
     {
-        return ProvinceResource::collection(Province::paginate(20));
+        return ProvinceResource::collection(Province::paginate(20))
+            ->additional([
+                'code' => 200,
+                'message' => 'success'
+            ]);
     }
 
     /**
@@ -30,7 +34,8 @@ class ProvinceController extends Controller
             'name' => $request->name,
         ]);
 
-        return new ProvinceResource($province);
+        return (new ProvinceResource($province))->response()
+            ->setStatusCode(200);
     }
 
     /**
@@ -68,6 +73,9 @@ class ProvinceController extends Controller
     {
         $province->delete();
 
-        return response()->json(null,204);
+        return response()->json([
+            'code' => 200,
+            'message' => 'success'
+        ],200);
     }
 }

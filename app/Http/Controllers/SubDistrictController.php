@@ -15,7 +15,11 @@ class SubDistrictController extends Controller
      */
     public function index()
     {
-        return SubDistrictResource::collection(SubDistrict::paginate(20));
+        return SubDistrictResource::collection(SubDistrict::paginate(20))
+            ->additional([
+                'code' => 200,
+                'message' => 'success'
+            ]);
     }
 
     /**
@@ -30,7 +34,8 @@ class SubDistrictController extends Controller
             'name' => $request->name,
         ]);
 
-        return new SubDistrictResource($subDistrict);
+        return (new SubDistrictResource($subDistrict))->response()
+            ->setStatusCode(200);
     }
 
     /**
@@ -68,6 +73,9 @@ class SubDistrictController extends Controller
     {
         $subDistrict->delete();
 
-        return response()->json(null,204);
+        return response()->json([
+            'code' => 200,
+            'message' => 'success'
+        ],200);
     }
 }

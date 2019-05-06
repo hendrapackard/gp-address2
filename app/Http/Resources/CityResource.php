@@ -19,4 +19,12 @@ class CityResource extends JsonResource
             'name' => $this->name,
         ];
     }
+
+    public function with($request)
+    {
+        return [
+            'code' => 200,
+            'message' => 'success',
+        ];
+    }
 }

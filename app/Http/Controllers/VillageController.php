@@ -15,7 +15,11 @@ class VillageController extends Controller
      */
     public function index()
     {
-        return VillageResource::collection(Village::paginate(20));
+        return VillageResource::collection(Village::paginate(20))
+            ->additional([
+                'code' => 200,
+                'message' => 'success'
+            ]);
     }
 
     /**
@@ -30,7 +34,8 @@ class VillageController extends Controller
             'name' => $request->name,
         ]);
 
-        return new VillageResource($village);
+        return (new VillageResource($village))->response()
+                ->setStatusCode(200);
     }
 
     /**
@@ -68,6 +73,9 @@ class VillageController extends Controller
     {
         $village->delete();
 
-        return response()->json(null,204);
+        return response()->json([
+            'code' => 200,
+            'message' => 'success'
+        ],200);
     }
 }

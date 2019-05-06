@@ -29,4 +29,12 @@ class AddressResource extends JsonResource
             'owner_id' => $this->owner_id,
         ];
     }
+
+    public function with($request)
+    {
+        return [
+            'code' => 200,
+            'message' => 'success',
+        ];
+    }
 }

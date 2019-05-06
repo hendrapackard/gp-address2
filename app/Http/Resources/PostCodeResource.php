@@ -20,4 +20,12 @@ class PostCodeResource extends JsonResource
             'village' => $this->village,
         ];
     }
+
+    public function with($request)
+    {
+        return [
+            'code' => 200,
+            'message' => 'success',
+        ];
+    }
 }

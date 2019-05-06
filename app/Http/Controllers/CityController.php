@@ -15,7 +15,11 @@ class CityController extends Controller
      */
     public function index()
     {
-        return CityResource::collection(City::paginate(20));
+        return CityResource::collection(City::paginate(20))
+            ->additional([
+                'code' => 200,
+                'message' => 'success'
+            ]);
     }
 
     /**
@@ -30,7 +34,8 @@ class CityController extends Controller
             'name' => $request->name,
         ]);
 
-        return new CityResource($city);
+        return (new CityResource($city))->response()
+            ->setStatusCode(200);
     }
 
     /**
@@ -68,6 +73,9 @@ class CityController extends Controller
     {
         $city->delete();
 
-        return response()->json(null,204);
+        return response()->json([
+            'code' => 200,
+            'message' => 'success'
+        ],200);
     }
 }
