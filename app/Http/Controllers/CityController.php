@@ -5,8 +5,9 @@ namespace App\Http\Controllers;
 use App\Http\Resources\CityResource;
 use App\City;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
-class CityController extends Controller
+class CityController extends BaseController
 {
     /**
      * Display a listing of the resource.
@@ -30,9 +31,15 @@ class CityController extends Controller
      */
     public function store(Request $request)
     {
-        $city = City::create([
-            'name' => $request->name,
+        $validator = Validator::make($request->all(),[
+            'name' => 'required',
         ]);
+
+        if ($validator->fails()){
+            return $this->sendError('validation error', $validator->errors());
+        }
+
+        $city = City::create($request->all());
 
         return (new CityResource($city))->response()
             ->setStatusCode(200);
@@ -58,7 +65,15 @@ class CityController extends Controller
      */
     public function update(Request $request, City $city)
     {
-        $city->update($request->only('name'));
+        $validator = Validator::make($request->all(),[
+            'name' => 'required',
+        ]);
+
+        if ($validator->fails()){
+            return $this->sendError('validation error', $validator->errors());
+        }
+
+        $city->update($request->all());
 
         return new CityResource($city);
     }
@@ -73,9 +88,6 @@ class CityController extends Controller
     {
         $city->delete();
 
-        return response()->json([
-            'code' => 200,
-            'message' => 'success'
-        ],200);
+        return $this->sendResponse('success',200);
     }
 }

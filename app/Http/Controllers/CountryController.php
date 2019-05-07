@@ -5,8 +5,9 @@ namespace App\Http\Controllers;
 use App\Country;
 use App\Http\Resources\CountryResource;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
-class CountryController extends Controller
+class CountryController extends BaseController
 {
     /**
      * Display a listing of the resource.
@@ -30,9 +31,15 @@ class CountryController extends Controller
      */
     public function store(Request $request)
     {
-        $country = Country::create([
-            'name' => $request->name,
+        $validator = Validator::make($request->all(),[
+            'name' => 'required',
         ]);
+
+        if ($validator->fails()){
+            return $this->sendError('validation error', $validator->errors());
+        }
+
+        $country = Country::create($request->all());
 
         return (new CountryResource($country))->response()
             ->setStatusCode(200);
@@ -58,7 +65,15 @@ class CountryController extends Controller
      */
     public function update(Request $request, Country $country)
     {
-        $country->update($request->only('name'));
+        $validator = Validator::make($request->all(),[
+            'name' => 'required',
+        ]);
+
+        if ($validator->fails()){
+            return $this->sendError('validation error', $validator->errors());
+        }
+
+        $country->update($request->all());
 
         return new CountryResource($country);
     }
@@ -73,9 +88,6 @@ class CountryController extends Controller
     {
         $country->delete();
 
-        return response()->json([
-            'code' => 200,
-            'message' => 'success'
-        ],200);
+        return $this->sendResponse('success',200);
     }
 }

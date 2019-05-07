@@ -5,8 +5,9 @@ namespace App\Http\Controllers;
 use App\Http\Resources\SubDistrictResource;
 use App\SubDistrict;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
-class SubDistrictController extends Controller
+class SubDistrictController extends BaseController
 {
     /**
      * Display a listing of the resource.
@@ -30,9 +31,15 @@ class SubDistrictController extends Controller
      */
     public function store(Request $request)
     {
-        $subDistrict = SubDistrict::create([
-            'name' => $request->name,
+        $validator = Validator::make($request->all(),[
+            'name' => 'required',
         ]);
+
+        if ($validator->fails()){
+            return $this->sendError('validation error', $validator->errors());
+        }
+
+        $subDistrict = SubDistrict::create($request->all());
 
         return (new SubDistrictResource($subDistrict))->response()
             ->setStatusCode(200);
@@ -58,7 +65,15 @@ class SubDistrictController extends Controller
      */
     public function update(Request $request, SubDistrict $subDistrict)
     {
-        $subDistrict->update($request->only('name'));
+        $validator = Validator::make($request->all(),[
+            'name' => 'required',
+        ]);
+
+        if ($validator->fails()){
+            return $this->sendError('validation error', $validator->errors());
+        }
+
+        $subDistrict->update($request->all());
 
         return new SubDistrictResource($subDistrict);
     }
@@ -73,9 +88,6 @@ class SubDistrictController extends Controller
     {
         $subDistrict->delete();
 
-        return response()->json([
-            'code' => 200,
-            'message' => 'success'
-        ],200);
+        return $this->sendResponse('success',200);
     }
 }

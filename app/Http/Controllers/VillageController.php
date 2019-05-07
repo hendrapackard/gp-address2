@@ -5,8 +5,9 @@ namespace App\Http\Controllers;
 use App\Http\Resources\VillageResource;
 use App\Village;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
-class VillageController extends Controller
+class VillageController extends BaseController
 {
     /**
      * Display a listing of the resource.
@@ -30,9 +31,15 @@ class VillageController extends Controller
      */
     public function store(Request $request)
     {
-        $village = Village::create([
-            'name' => $request->name,
+        $validator = Validator::make($request->all(),[
+            'name' => 'required',
         ]);
+
+        if ($validator->fails()){
+            return $this->sendError('validation error', $validator->errors());
+        }
+
+        $village = Village::create($request->all());
 
         return (new VillageResource($village))->response()
                 ->setStatusCode(200);
@@ -58,7 +65,15 @@ class VillageController extends Controller
      */
     public function update(Request $request, Village $village)
     {
-        $village->update($request->only('name'));
+        $validator = Validator::make($request->all(),[
+            'name' => 'required',
+        ]);
+
+        if ($validator->fails()){
+            return $this->sendError('validation error', $validator->errors());
+        }
+
+        $village->update($request->all());
 
         return new VillageResource($village);
     }
@@ -73,9 +88,6 @@ class VillageController extends Controller
     {
         $village->delete();
 
-        return response()->json([
-            'code' => 200,
-            'message' => 'success'
-        ],200);
+        return $this->sendResponse('success',200);
     }
 }

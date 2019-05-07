@@ -5,8 +5,9 @@ namespace App\Http\Controllers;
 use App\Address;
 use App\Http\Resources\AddressResource;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
-class AddressController extends Controller
+class AddressController extends BaseController
 {
     /**
      * Display a listing of the resource.
@@ -30,21 +31,27 @@ class AddressController extends Controller
      */
     public function store(Request $request)
     {
-        $address = Address::create([
-            'name' => $request->name,
-            'address' => $request->address,
-            'note' => $request->note,
-            'village_id' => $request->village_id,
-            'sub_district_id' => $request->sub_district_id,
-            'city_id' => $request->city_id,
-            'province_id' => $request->province_id,
-            'country_id' => $request->country_id,
-            'is_default' => $request->is_default,
-            'postcode' => $request->postcode,
-            'latitude' => $request->latitude,
-            'longitude' => $request->longitude,
-            'owner_id' => $request->owner_id,
+        $validator = Validator::make($request->all(),[
+            'name' => 'required',
+            'address' => 'required',
+            'note' => 'required',
+            'village_id' => 'required',
+            'sub_district_id' => 'required',
+            'city_id' => 'required',
+            'province_id' => 'required',
+            'country_id' => 'required',
+            'is_default' => 'required',
+            'postcode' => 'required',
+            'latitude' => 'required',
+            'longitude' => 'required',
+            'owner_id' => 'required',
         ]);
+
+        if ($validator->fails()){
+            return $this->sendError('validation error', $validator->errors());
+        }
+
+        $address = Address::create($request->all());
 
         return (new AddressResource($address))->response()
             ->setStatusCode(200);
@@ -71,21 +78,27 @@ class AddressController extends Controller
      */
     public function update(Request $request, Address $address)
     {
-        $address->update($request->only([
-            'name',
-            'address',
-            'note',
-            'village_id',
-            'sub_district_id',
-            'city_id',
-            'province_id',
-            'country_id',
-            'is_default',
-            'postcode',
-            'latitude',
-            'longitude',
-            'owner_id',
-        ]));
+        $validator = Validator::make($request->all(),[
+            'name' => 'required',
+            'address' => 'required',
+            'note' => 'required',
+            'village_id' => 'required',
+            'sub_district_id' => 'required',
+            'city_id' => 'required',
+            'province_id' => 'required',
+            'country_id' => 'required',
+            'is_default' => 'required',
+            'postcode' => 'required',
+            'latitude' => 'required',
+            'longitude' => 'required',
+            'owner_id' => 'required',
+        ]);
+
+        if ($validator->fails()){
+            return $this->sendError('validation error', $validator->errors());
+        }
+
+        $address->update($request->all());
 
         return new AddressResource($address);
     }
@@ -100,9 +113,6 @@ class AddressController extends Controller
     {
         $address->delete();
 
-        return response()->json([
-            'code' => 200,
-            'message' => 'success'
-        ],200);
+        return $this->sendResponse('success',200);
     }
 }

@@ -5,8 +5,9 @@ namespace App\Http\Controllers;
 use App\Http\Resources\ProvinceResource;
 use App\Province;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
-class ProvinceController extends Controller
+class ProvinceController extends BaseController
 {
     /**
      * Display a listing of the resource.
@@ -30,9 +31,15 @@ class ProvinceController extends Controller
      */
     public function store(Request $request)
     {
-        $province = Province::create([
-            'name' => $request->name,
+        $validator = Validator::make($request->all(),[
+            'name' => 'required',
         ]);
+
+        if ($validator->fails()){
+            return $this->sendError('validation error', $validator->errors());
+        }
+
+        $province = Province::create($request->all());
 
         return (new ProvinceResource($province))->response()
             ->setStatusCode(200);
@@ -58,7 +65,15 @@ class ProvinceController extends Controller
      */
     public function update(Request $request, Province $province)
     {
-        $province->update($request->only('name'));
+        $validator = Validator::make($request->all(),[
+            'name' => 'required',
+        ]);
+
+        if ($validator->fails()){
+            return $this->sendError('validation error', $validator->errors());
+        }
+
+        $province->update($request->all());
 
         return new ProvinceResource($province);
     }
@@ -73,9 +88,6 @@ class ProvinceController extends Controller
     {
         $province->delete();
 
-        return response()->json([
-            'code' => 200,
-            'message' => 'success'
-        ],200);
+        return $this->sendResponse('success',200);
     }
 }

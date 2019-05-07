@@ -5,8 +5,9 @@ namespace App\Http\Controllers;
 use App\Http\Resources\PostCodeResource;
 use App\PostCode;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
-class PostCodeController extends Controller
+class PostCodeController extends BaseController
 {
     /**
      * Display a listing of the resource.
@@ -30,10 +31,16 @@ class PostCodeController extends Controller
      */
     public function store(Request $request)
     {
-        $postCode = PostCode::create([
-            'code' => $request->code,
-            'village_id' => $request->village_id,
+        $validator = Validator::make($request->all(),[
+            'code' => 'required',
+            'village_id' => 'required'
         ]);
+
+        if ($validator->fails()){
+            return $this->sendError('validation error', $validator->errors());
+        }
+
+        $postCode = PostCode::create($request->all());
 
         return (new PostCodeResource($postCode))->response()
             ->setStatusCode(200);
@@ -59,7 +66,16 @@ class PostCodeController extends Controller
      */
     public function update(Request $request, PostCode $postCode)
     {
-        $postCode->update($request->only(['code','village_id']));
+        $validator = Validator::make($request->all(),[
+            'code' => 'required',
+            'village_id' => 'required'
+        ]);
+
+        if ($validator->fails()){
+            return $this->sendError('validation error', $validator->errors());
+        }
+
+        $postCode->update($request->all());
 
         return new PostCodeResource($postCode);
     }
@@ -74,9 +90,6 @@ class PostCodeController extends Controller
     {
         $postCode->delete();
 
-        return response()->json([
-            'code' => 200,
-            'message' => 'success'
-        ],200);
+        return $this->sendResponse('success',200);
     }
 }
